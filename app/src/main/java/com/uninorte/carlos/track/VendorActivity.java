@@ -16,22 +16,30 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.ArrayList;
 
-public class VendorActivity extends AppCompatActivity implements LocationListener {
+public class VendorActivity extends AppCompatActivity implements LocationListener,OnMapReadyCallback {
     private LocationManager mManager;
     private NotificationManager mNotificationManager;
     Notification notification;
     int mNotificationId = 001;
     int REQUEST_CODE = 1;
     ArrayList<String> track =new ArrayList<String>();
-
-
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1 ;
+    Double lat,lngi;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,8 +167,10 @@ public class VendorActivity extends AppCompatActivity implements LocationListene
     public void onLocationChanged(Location location) {
         //Aqui guardo en un array las posiciones cada vez que cambia
         Double latitud = location.getLatitude();
+        lat=latitud;
         Double altitud = location.getAltitude();
         Double longitude = location.getLongitude();
+        lngi=longitude;
         track.add(latitud.toString()+"-"+altitud.toString()+"+"+longitude.toString());
     }
 
@@ -190,5 +200,32 @@ public class VendorActivity extends AppCompatActivity implements LocationListene
                 stopGps();
                 break;
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+            } else {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
+            }
+        }
+        LatLng latLng = new LatLng(lat, lngi);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+        googleMap.animateCamera(cameraUpdate);
+        googleMap.setMyLocationEnabled(true);
+        /*Polyline line = googleMap.addPolyline(new PolylineOptions()
+                .add(new LatLng(51.5, -0.1), new LatLng(40.7, -74.0))
+                .width(5)
+                .color(Color.RED));*/
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(lat,lngi)).title("Aqui Estoy"));
     }
 }
