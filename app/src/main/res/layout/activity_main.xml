@@ -1,30 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.uninorte.carlos.track.MainActivity">
+    tools:context="com.uninorte.carlos.track.MainActivity"
+    android:background="@color/colorPrimary">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="18dp"
         android:text="@string/welcome"
-        />
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:layout_marginTop="21dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignStart="@+id/imageView" />
+
+    <Button
+        android:id="@+id/logout"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:onClick="logoutClick"
+        android:text="@string/logout"
+        android:textColor="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="logoutClick"/>
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="18dp"
-        android:text="@string/logout"
-        android:onClick="logoutClick"/>
+        android:background="@color/colorPrimaryDark"
+        android:onClick="logoutClick"
+        android:layout_above="@+id/logout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/iconos"
+        android:layout_weight="1"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/sign_in_button" />
+
+</RelativeLayout>
